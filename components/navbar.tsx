@@ -10,7 +10,13 @@ export function Navbar() {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <Link href="/" className="text-xl font-bold text-white hover:text-purple-300 transition-colors">
-            PuterJS Claude
+            <Link href="/" className="flex items-center">
+            <img
+              src={ "/Primary Logo.svg"}
+              alt="PuterJS Claude Logo"
+              className="h-12 w-auto"
+            />
+          </Link>
           </Link>
 
           <div className="flex items-center gap-4">

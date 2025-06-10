@@ -1,0 +1,146 @@
+/* app/vi/styles.css */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 4rem;
+  position: relative;
+}
+
+.main-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  background: linear-gradient(45deg, #ff6b35, #ff8f65, #6c5ce7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1rem;
+  animation: glow 3s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from { filter: drop-shadow(0 0 20px rgba(255, 107, 53, 0.3)); }
+  to { filter: drop-shadow(0 0 30px rgba(255, 107, 53, 0.6)); }
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: #ffd6cc;
+  opacity: 0.9;
+  margin-bottom: 2rem;
+}
+
+.badge {
+  display: inline-block;
+  background: linear-gradient(45deg, #48bb78, #4a90e2);
+  color: white;
+  padding: 0.5rem 1.5rem;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
+}
+
+.logo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+.logo-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.logo-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.5s;
+}
+
+.logo-card:hover::before {
+  left: 100%;
+}
+
+.logo-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(255, 107, 53, 0.3);
+}
+
+.logo-variant {
+  margin-bottom: 1.5rem;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #ff6b35;
+}
+
+.logo-description {
+  font-size: 0.9rem;
+  color: #ffd6cc;
+  opacity: 0.8;
+  margin-bottom: 1rem;
+}
+
+.export-btn {
+  background: linear-gradient(45deg, #ff6b35, #ff8f65);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+}
+
+.export-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+}
+
+.export-all-btn {
+  background: linear-gradient(45deg, #6c5ce7, #4a90e2);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 15px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin: 2rem auto;
+  display: block;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+}
+
+.export-all-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(108, 92, 231, 0.6);
+}
+
+/* Add other styles from your original CSS as needed */

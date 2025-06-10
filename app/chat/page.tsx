@@ -1,6 +1,4 @@
-"use client"
-
-import type React from "react"
+"use client";
 
 import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
@@ -15,6 +13,12 @@ interface Message {
   role: "user" | "assistant"
   content: string
   timestamp: Date
+}
+
+declare global {
+  interface Window {
+    puter: any
+  }
 }
 
 export default function ChatPage() {
@@ -42,38 +46,82 @@ export default function ChatPage() {
   }, [messages])
 
   const handleSendMessage = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!input.trim() || isTyping) return
+  e.preventDefault()
+  if (!input.trim() || isTyping) return
 
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      role: "user",
-      content: input.trim(),
-      timestamp: new Date(),
-    }
-
-    setMessages((prev) => [...prev, userMessage])
-    setInput("")
-    setIsTyping(true)
-
-    // Set hasUserMessages to true after first user message
-    if (!hasUserMessages) {
-      setHasUserMessages(true)
-    }
-
-    // TODO: integrate Puter.js Claude API here
-    // Simulate API call with delay
-    setTimeout(() => {
-      const botMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        role: "assistant",
-        content: `Thanks for your message: "${userMessage.content}". This is a placeholder response. The actual Claude API integration will be implemented here using Puter.js.`,
-        timestamp: new Date(),
-      }
-      setMessages((prev) => [...prev, botMessage])
-      setIsTyping(false)
-    }, 2000)
+  const userMessage: Message = {
+    id: Date.now().toString(),
+    role: "user",
+    content: input.trim(),
+    timestamp: new Date(),
   }
+
+  setMessages((prev) => [...prev, userMessage])
+  setInput("")
+  setIsTyping(true)
+
+  if (!hasUserMessages) setHasUserMessages(true)
+
+  const assistantMessage: Message = {
+    id: (Date.now() + 1).toString(),
+    role: "assistant",
+    content: "",
+    timestamp: new Date(),
+  }
+
+  setMessages((prev) => [...prev, assistantMessage])
+
+  // ✅ Wait for window.puter to be ready
+  const waitForPuter = () =>
+    new Promise<void>((resolve, reject) => {
+      const maxWaitTime = 3000
+      const interval = 100
+      let waited = 0
+      const check = setInterval(() => {
+        if (typeof window !== "undefined" && window.puter) {
+          clearInterval(check)
+          resolve()
+        } else if ((waited += interval) >= maxWaitTime) {
+          clearInterval(check)
+          reject(new Error("Puter SDK not loaded"))
+        }
+      }, interval)
+    })
+
+  try {
+    await waitForPuter()
+    const response = await window.puter.ai.chat(userMessage.content, {
+      model: "claude-3-7-sonnet",
+      stream: true,
+    })
+
+    for await (const part of response) {
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.id === assistantMessage.id
+            ? { ...msg, content: msg.content + (part?.text || "") }
+            : msg
+        )
+      )
+    }
+  } catch (error) {
+    console.error("❌ Error:", error)
+    setMessages((prev) =>
+      prev.map((msg) =>
+        msg.id === assistantMessage.id
+          ? {
+              ...msg,
+              content:
+                "⚠️ There was an error fetching the response. Please try again.",
+            }
+          : msg
+      )
+    )
+  } finally {
+    setIsTyping(false)
+  }
+}
+
 
   const handleNewChat = () => {
     setMessages([
@@ -90,74 +138,42 @@ export default function ChatPage() {
     setHasUserMessages(false)
   }
 
-  // Compact layout for initial state
-  if (!hasUserMessages) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-4">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-2xl">
-          {/* Chat Header */}
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 flex items-center justify-center">
-                <Bot className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <h1 className="text-xl font-semibold text-white">Claude 3.7 Sonnet</h1>
-                <p className="text-sm text-white/60">Powered by Puter.js</p>
-              </div>
-            </div>
+  const ChatUI = (
+    <div className="flex-1 overflow-hidden">
+      <div className="h-full container mx-auto px-4 max-w-4xl flex flex-col">
+        <div className="flex-1 overflow-y-auto py-6 space-y-4">
+          <AnimatePresence>
+            {messages.map((message) => (
+              <ChatMessage key={message.id} message={message} />
+            ))}
+          </AnimatePresence>
+          {isTyping && <TypingIndicator />}
+          <div ref={messagesEndRef} />
+        </div>
 
+        <div className="py-4 border-t border-white/10 bg-black/20 backdrop-blur-sm">
+          <form onSubmit={handleSendMessage} className="flex gap-3">
+            <Input
+              ref={inputRef}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Type your message..."
+              className="flex-1 bg-[#1d1836] border-white/20 text-white placeholder:text-white/50 focus:border-purple-400 focus:ring-purple-400/20"
+              disabled={isTyping}
+            />
             <Button
-              onClick={handleNewChat}
-              variant="outline"
-              size="sm"
-              className="border-white/20 text-white/70 hover:text-white hover:bg-white/10"
+              type="submit"
+              disabled={!input.trim() || isTyping}
+              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed px-6"
             >
-              <RotateCcw className="w-4 h-4 mr-2" />
-              New Chat
+              <Send className="w-4 h-4" />
             </Button>
-          </div>
-
-          {/* Compact Chat Container */}
-          <div className="bg-black/20 backdrop-blur-sm rounded-2xl border border-white/10 flex flex-col h-[500px]">
-            <div className="flex-1 overflow-y-auto p-6 space-y-4">
-              <AnimatePresence>
-                {messages.map((message) => (
-                  <ChatMessage key={message.id} message={message} />
-                ))}
-              </AnimatePresence>
-
-              {isTyping && <TypingIndicator />}
-              <div ref={messagesEndRef} />
-            </div>
-
-            {/* Input Area */}
-            <div className="p-6 border-t border-white/10 bg-[#1d1836] rounded-b-2xl">
-              <form onSubmit={handleSendMessage} className="flex gap-3">
-                <Input
-                  ref={inputRef}
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder="Type your message..."
-                  className="flex-1 bg-black/30 border-white/20 text-white placeholder:text-white/50 focus:border-purple-400 focus:ring-purple-400/20"
-                  disabled={isTyping}
-                />
-                <Button
-                  type="submit"
-                  disabled={!input.trim() || isTyping}
-                  className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed px-6"
-                >
-                  <Send className="w-4 h-4" />
-                </Button>
-              </form>
-            </div>
-          </div>
-        </motion.div>
+          </form>
+        </div>
       </div>
-    )
-  }
+    </div>
+  )
 
-  // Full-screen layout after first message
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -165,7 +181,6 @@ export default function ChatPage() {
       transition={{ duration: 0.3 }}
       className="h-screen flex flex-col"
     >
-      {/* Full-screen Chat Header */}
       <div className="border-b border-white/10 bg-black/20 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-4 max-w-4xl">
           <div className="flex items-center justify-between">
@@ -192,42 +207,7 @@ export default function ChatPage() {
         </div>
       </div>
 
-      {/* Full-screen Chat Messages */}
-      <div className="flex-1 overflow-hidden">
-        <div className="h-full container mx-auto px-4 max-w-4xl flex flex-col">
-          <div className="flex-1 overflow-y-auto py-6 space-y-4">
-            <AnimatePresence>
-              {messages.map((message) => (
-                <ChatMessage key={message.id} message={message} />
-              ))}
-            </AnimatePresence>
-
-            {isTyping && <TypingIndicator />}
-            <div ref={messagesEndRef} />
-          </div>
-
-          {/* Full-screen Input Area */}
-          <div className="py-4 border-t border-white/10 bg-black/20 backdrop-blur-sm">
-            <form onSubmit={handleSendMessage} className="flex gap-3">
-              <Input
-                ref={inputRef}
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Type your message..."
-                className="flex-1 bg-[#1d1836] border-white/20 text-white placeholder:text-white/50 focus:border-purple-400 focus:ring-purple-400/20"
-                disabled={isTyping}
-              />
-              <Button
-                type="submit"
-                disabled={!input.trim() || isTyping}
-                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed px-6"
-              >
-                <Send className="w-4 h-4" />
-              </Button>
-            </form>
-          </div>
-        </div>
-      </div>
+      {ChatUI}
     </motion.div>
   )
 }

@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { MessageCircle, Github, Zap, Infinity, Code } from "lucide-react"
+import { MessageCircle, Github, Zap, Code, Infinity as InfinityIcon } from "lucide-react"
 import { motion } from "framer-motion"
 
 export default function LandingPage() {
@@ -75,7 +75,7 @@ export default function LandingPage() {
                 <span>Lightning Fast</span>
               </div>
               <div className="flex items-center gap-2 text-white/70">
-                <Infinity className="w-5 h-5 text-green-400" />
+                <InfinityIcon className="w-5 h-5 text-green-400" />
                 <span>Unlimited Usage</span>
               </div>
               <div className="flex items-center gap-2 text-white/70">
