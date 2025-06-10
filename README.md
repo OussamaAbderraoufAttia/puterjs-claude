@@ -1,30 +1,75 @@
-# Puterjs-claude ui design
+# 🧠 Claude 3.7 Chatbot — Powered by Next.js, Tailwind CSS & Puter.js
 
-*Automatically synced with your [v0.dev](https://v0.dev) deployments*
+This open-source project was built by **Oussama Abderraouf ATTIA** to give users a **completely free and unlimited** way to chat with **Claude 3.7 Sonnet**, using the `puter.ai.chat()` API.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/oussama-abderraouf-attias-projects/v0-puterjs-claude-ui-design)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev/chat/projects/T0voSwGRMXO)
+Clean UI, real-time responses, dark mode support, and no rate limits — just pure Claude magic ✨
 
-## Overview
+---
 
-This repository will stay in sync with your deployed chats on [v0.dev](https://v0.dev).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.dev](https://v0.dev).
+## 📸 Demo Preview
 
-## Deployment
+> 🖼️ **Demo GIF / Screenshot Here**
+> *(You can add a recording or image of the chatbot UI here later)*
 
-Your project is live at:
+---
 
-**[https://vercel.com/oussama-abderraouf-attias-projects/v0-puterjs-claude-ui-design](https://vercel.com/oussama-abderraouf-attias-projects/v0-puterjs-claude-ui-design)**
+## 🛠️ Built With
 
-## Build your app
+- ✅ **Next.js 14+** (App Router)
+- ✅ **TypeScript**
+- ✅ **Tailwind CSS**
+- ✅ **next-themes** (dark mode)
+- ✅ **Puter.js** for Claude 3.7 Sonnet streaming
+- ✅ Optional: Zustand, Framer Motion, etc.
 
-Continue building your app on:
+---
 
-**[https://v0.dev/chat/projects/T0voSwGRMXO](https://v0.dev/chat/projects/T0voSwGRMXO)**
+## ✨ Features
 
-## How It Works
+- 🔁 **Real-time streaming** Claude 3.7 responses  
+- 💬 Clean chat UI with styled message bubbles  
+- 🌗 **Dark mode** toggle (via next-themes)  
+- 📱 Responsive mobile/desktop layout  
+- 🚀 Optimized for performance & UX  
+- 🛠️ Fully customizable and extensible  
 
-1. Create and modify your project using [v0.dev](https://v0.dev)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+---
+
+## 📦 Getting Started
+
+```bash
+git clone https://github.com/your-username/claude-chatbot
+cd claude-chatbot
+npm install
+npm run dev
+```
+
+Open http://localhost:3000 in your browser to see it live.
+
+## 🧪 How It Works
+
+This chatbot uses the **Claude 3.7 Sonnet** model through the unofficial [Puter API](https://developer.puter.com/tutorials/free-unlimited-claude-37-sonnet-api/) to generate responses. It's streamed in real-time with zero cost and no keys needed — just open the app and start chatting.
+
+---
+
+## 📂 Project Structure
+
+```
+/app           → Main pages and layout  
+/components    → UI components like Chatbot, MessageBubble  
+/lib           → Claude logic abstraction using puter.js  
+/types         → TypeScript types  
+/public        → Assets like icons, logos  
+/styles        → Tailwind globals  
+```
+
+---
+
+## 📜 License
+
+This project is **open source** and free to use.  
+Feel free to fork it, customize it, and contribute!
+
+---
+
+Made with 💻 by **Oussama Abderraouf ATTIA**
