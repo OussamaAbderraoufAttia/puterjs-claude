@@ -32,7 +32,7 @@ export function ChatMessage({ message }: ChatMessageProps) {
           isUser ? "bg-gradient-to-r from-blue-600 to-purple-600" : "bg-gradient-to-r from-purple-600 to-blue-600"
         }`}
       >
-        {isUser ? <User className="w-4 h-4 text-white" /> : <Bot className="w-4 h-4 text-white" />}
+        {isUser ? <User className="w-4 h-4 text-white" /> : <img src="/Stroke Logo.svg" alt="AI Logo" className="w-full h-full object-contain" />}
       </div>
 
       {/* Message Content */}

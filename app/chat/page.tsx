@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Send, RotateCcw, Bot } from "lucide-react"
+import { Send, RotateCcw } from "lucide-react"
 import { AnimatePresence, motion } from "framer-motion"
 import { ChatMessage } from "@/components/chat-message"
 import { TypingIndicator } from "@/components/typing-indicator"
@@ -186,7 +186,7 @@ export default function ChatPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 flex items-center justify-center">
-                <Bot className="w-4 h-4 text-white" />
+                <img src="/Icon Logo.svg" alt="Bot Logo" className="w-full h-full object-contain" />
               </div>
               <div>
                 <h1 className="text-lg font-semibold text-white">Claude 3.7 Sonnet</h1>

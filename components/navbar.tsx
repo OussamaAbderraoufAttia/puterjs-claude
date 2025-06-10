@@ -15,6 +15,7 @@ export function Navbar() {
               src={ "/Primary Logo.svg"}
               alt="PuterJS Claude Logo"
               className="h-12 w-auto"
+              draggable={false}
             />
           </Link>
           </Link>

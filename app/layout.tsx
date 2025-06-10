@@ -11,7 +11,11 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "PuterJS Claude - Free Claude 3.7 Chatbot",
   description: "Free and unlimited Claude 3.7 Sonnet chatbot powered by Puter.js",
-  generator: "v0.dev",
+   icons: {
+    icon: [
+      {url: '/favicon.ico',} // ✅ Path relative to public/
+    ]
+  },
 }
 
 export default function RootLayout({
